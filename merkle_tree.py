@@ -1,20 +1,40 @@
 import math
+
 from node.utils import calculate_hash
 
+
 class Node:
-    def __init__(self, value: int, left_child=None, right_child=None):
+    def __init__(self, value: str, left_child=None, right_child=None):
         self.value = value
         self.left_child = left_child
         self.right_child = right_child
 
+
 def compute_tree_depth(number_of_leaves: int) -> int:
     return math.ceil(math.log2(number_of_leaves))
+
 
 def is_power_of_2(number_of_leaves: int) -> bool:
     return math.log2(number_of_leaves).is_integer()
 
+
+def fill_set(list_of_nodes: list):
+    current_number_of_leaves = len(list_of_nodes)
+    if is_power_of_2(current_number_of_leaves):
+        return list_of_nodes
+    total_number_of_leaves = 2**compute_tree_depth(current_number_of_leaves)
+    if current_number_of_leaves % 2 == 0:
+        for i in range(current_number_of_leaves, total_number_of_leaves, 2):
+            list_of_nodes = list_of_nodes + [list_of_nodes[-2], list_of_nodes[-1]]
+    else:
+        for i in range(current_number_of_leaves, total_number_of_leaves):
+            list_of_nodes.append(list_of_nodes[-1])
+    return list_of_nodes
+
+
 def build_merkle_tree(node_data: list[str]) -> Node:
-    old_set_of_nodes = [Node(calculate_hash(data)) for data in node_data]
+    complete_set = fill_set(node_data)
+    old_set_of_nodes = [Node(calculate_hash(data)) for data in complete_set]
     tree_depth = compute_tree_depth(len(old_set_of_nodes))
 
     for i in range(0, tree_depth):
@@ -31,17 +51,3 @@ def build_merkle_tree(node_data: list[str]) -> Node:
             new_set_of_nodes.append(new_node)
         old_set_of_nodes = new_set_of_nodes
     return new_set_of_nodes[0]
-
-def fill_set(list_of_nodes):
-    current_number_of_leaves = len(list_of_nodes)
-    if is_power_of_2(current_number_of_leaves):
-        return list_of_nodes
-    total_number_of_leaves = 2**compute_tree_depth(current_number_of_leaves)
-    if current_number_of_leaves % 2 == 0:
-        for i in range(current_number_of_leaves, total_number_of_leaves, 2):
-            list_of_nodes = list_of_nodes + [list_of_nodes[-2], list_of_nodes[-1]]
-    else:
-        for i in range(current_number_of_leaves, total_number_of_leaves):
-            list_of_nodes.append(list_of_nodes[-1])
-    return list_of_nodes
-
