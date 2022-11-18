@@ -117,13 +117,14 @@ class BlockChain:
 
         return vars(block)
     
+    # not sure what these two are for, but they were included in the resource i was using so i'm leaving them in
     def create_node(self, address):
         self.nodes.add(address)
         return True
     
     @staticmethod
     def obtain_block_object(block_data):
-        return Block(
+        return SBFCoinBlock(
             block_data['index'],
             block_data['proof'],
             block_data['previous_hash'],
