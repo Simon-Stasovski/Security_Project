@@ -4,8 +4,9 @@ from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
 
-from node.utils import calculate_hash
+from common.utils import calculate_hash
 
+# normal Stack class
 class Stack:
     def __init__(self):
         self.elements = []
@@ -16,14 +17,17 @@ class Stack:
     def pop(self):
         return self.elements.pop()
 
+# Stack created for use with transaction scripts.
+    # Modeled after the Script language used by Bitcoin
 class StackScript(Stack):
+    # constructor; stores the current transaction data
     def __init__(self, transaction_data : dict):
         super().__init__()
         for count, ti in enumerate(transaction_data["inputs"]):
             ti_dict = json.loads(ti)
             ti_dict.pop("unlocking_script")
             transaction_data["inputs"][count] = json.dumps(ti_dict)
-            self.transaction_data = transaction_data
+        self.transaction_data = transaction_data
     
     # duplicate top item (which will be public key)
     def op_dup(self):
@@ -43,7 +47,7 @@ class StackScript(Stack):
         assert last_elem_1 == last_elem_2
 
     # check that unlocking script signature is valid
-    def op_checksig(self, transaction_data : dict):
+    def op_checksig(self):
         pubK = self.pop()
         sig = self.pop()
         sig_decoded = binascii.unhexlify(sig.encode('utf-8'))
