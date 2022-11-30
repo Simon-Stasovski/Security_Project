@@ -113,7 +113,7 @@ class Wallet:
 
             i = 0
             for outputString in outputsString:
-                outputs[i] = json.loads(outputString[i])
+                outputs[i] = json.loads(outputString)
                 outputs[i] = outputs[i].amount
                 i += 1
 
