@@ -1,4 +1,5 @@
 import json
+import requests
 
 from node.Block import Block
 from node.script import StackScript
@@ -9,6 +10,14 @@ class NodeTransaction:
         self.transaction_data = ""
         self.inputs = ""
         self.outputs = ""
+        
+    def broadcast(self):
+        node_list = [OtherNode("127.0.0.1", 5001), OtherNode("127.0.0.1", 5002)]
+        for node in node_list:
+            try:
+                node.send(self.transaction_data)
+            except requests.ConnectionError:
+                pass
     
     # receives a given transaction, saving the inputs and outputs to backing fields
     def receive(self, transaction : dict):
@@ -70,3 +79,13 @@ class NodeTransaction:
                 class_method(stack_script)
             else:
                 stack_script.push(elem)
+
+class OtherNode:
+    def __init__(self, ip: str, port: int):
+        self.base_url = f"http://{ip}:{port}/"
+
+    def send(self, transaction_data: dict) -> requests.Response:
+        url = f"{self.base_url}transactions"
+        req_return = requests.post(url, json=transaction_data)
+        req_return.raise_for_status()
+        return req_return
