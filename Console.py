@@ -1,5 +1,6 @@
 import sys
 import hashlib
+import json
 
 # print(sys.argv)
 
@@ -29,6 +30,54 @@ userWallets = [simon_wallet, jacob_wallet, chase_wallet]
 # visualize Transaction History
 # check balance()
 # perform a transaction
+
+
+def get_ledger(most_recent_block: Block, public_key: str):
+
+    messages = []
+
+    while most_recent_block is not None:
+
+        inputsStrings = most_recent_block.transaction_data["inputs"]
+        outputsString = most_recent_block.transaction_data["outputs"]
+
+        inputs = []
+        outputs = []
+
+        for inputStrings in inputsStrings:
+            inputs.append(json.loads(inputStrings))
+
+        for outputString in outputsString:
+            outputs.append(json.loads(outputString))
+
+        messages.append(most_recent_block)
+        if most_recent_block.previous_block is not None:
+
+            outputsPreviousStrings = most_recent_block.previous_block.transaction_data[
+                "outputs"
+            ]
+
+            outputsPrevious = []
+
+            for outputPreviousStrings in outputsPreviousStrings:
+                outputsPrevious.append(json.loads(outputPreviousStrings))
+
+            for inputs in outputsPrevious:
+                if (
+                    public_key
+                    == outputsPrevious[input["output_index"]]["public_key_hash"]
+                ):
+                    print(
+                        "You payed "
+                        + str(outputs[input["output_index"]]["amount"])
+                        + " NS Coin(s)."
+                    )
+
+        for output in outputs:
+            if public_key == output["public_key_hash"]:
+                print("You received " + str(output["amount"]) + " NS Coin(s).")
+
+        most_recent_block = most_recent_block.previous_block
 
 
 def login():
@@ -89,11 +138,10 @@ while True:
 
     elif userInput == "3":
         print("transaction history")
+        get_ledger(blockchain(), loggedUsersWallet.owner.public_key_hash)
 
     elif userInput == "4":
         print("perform a transaction")
 
     else:
         print("Not a valid option")
-
-# def get_ledger(most_recent_block : Block):
