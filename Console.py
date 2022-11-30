@@ -31,8 +31,9 @@ password3.update(b"1738")
 
 userPass = [password1, password2, password3]
 containsUser = False
-
+index = -1
 for i in userArray:
+    index += 1
     if array[0].lower() == i:
         containsUser = True
 
@@ -42,4 +43,8 @@ if containsUser:
 
 
 byte_input = array[1].encode()
-hash_object = hashlib.sha256(byte_input)
+hash_pass = hashlib.sha256(byte_input)
+containsPass = False
+for j in userPass:
+    if hash_pass == j:
+        containsPass = True
