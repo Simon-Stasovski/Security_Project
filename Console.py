@@ -12,6 +12,8 @@ from jacob import hash_pass as jacob_hash
 from simon import hash_pass as simon_hash
 from chase import hash_pass as chase_hash
 
+userArray = [simon_username, jacob_username, chase_username]
+userPass = [simon_hash, jacob_hash, chase_hash]
 # array = [sys.argv[1], sys.argv[2]]
 # print(array)
 
@@ -27,8 +29,6 @@ from chase import hash_pass as chase_hash
 def login():
     login = False
     while login is False:
-        userArray = [simon_username, jacob_username, chase_username]
-        userPass = [simon_hash, jacob_hash, chase_hash]
 
         usernameConsole = input("Please enter Username ")
         passwordConsole = input("Please enter Password ")
@@ -64,3 +64,26 @@ def login():
 
 
 loggedUser = login()
+
+while True:
+    print("         Menu:        ")
+    print("Press 1 to log into a different user")
+    print("Press 2 to check current balance")
+    print("Press 3 to see transaction history")
+    print("Press 4 to perform a transaction")
+    userInput = input("Your choice: ")
+
+    if userInput == "1":
+        loggedUser = login()
+
+    elif userInput == "2":
+        print("current balance")
+
+    elif userInput == "3":
+        print("transaction history")
+
+    elif userInput == "4":
+        print("perform a transaction")
+
+    else:
+        print("Not a valid option")
