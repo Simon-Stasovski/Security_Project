@@ -11,15 +11,18 @@ from common.transaction_input import TransactionInput
 from common.transaction_output import TransactionOutput
 
 # a user's Owner
+
 class Owner:
-    # takes
-        # private_key - the user's private key
-        # public_key_hash - hash of the user's public key (works as address)
-        # public_key_hex - hex value of the user's public key
-    def __init__(self, private_key: RSA.RsaKey, public_key_hash, public_key_hex):
-        self.private_key = private_key
-        self.public_key_hash = public_key_hash
-        self.public_key_hex = public_key_hex
+    def __init__(self, private_key: str = ""):
+        self.balance = 0
+        if private_key:
+            self.private_key = RSA.importKey(private_key)
+        else:
+            self.private_key = RSA.generate(2048)
+        public_key = self.private_key.publickey().export_key("DER")
+        self.public_key_hex = binascii.hexlify(public_key).decode("utf-8")
+        self.public_key_hash = calculate_hash(calculate_hash(self.public_key_hex, hash_function="sha256"),
+                                              hash_function="ripemd160")
 
 
 # initializes a wallet object using a randomly generated key pair
