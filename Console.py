@@ -11,9 +11,14 @@ from chase import username as chase_username
 from jacob import hash_pass as jacob_hash
 from simon import hash_pass as simon_hash
 from chase import hash_pass as chase_hash
+from simon import user_wallet as simon_wallet
+from jacob import user_wallet as jacob_wallet
+from chase import user_wallet as chase_wallet
+from initialize_blockchain import blockchain
 
 userArray = [simon_username, jacob_username, chase_username]
 userPass = [simon_hash, jacob_hash, chase_hash]
+userWallets = [simon_wallet, jacob_wallet, chase_wallet]
 # array = [sys.argv[1], sys.argv[2]]
 # print(array)
 
@@ -64,13 +69,14 @@ def login():
 
 
 loggedUser = login()
-
+loggedUsersWallet = userWallets[loggedUser]
 while True:
+    print(f" Welcome {userArray[loggedUser]}")
     print("         Menu:        ")
-    print("Press 1 to log into a different user")
-    print("Press 2 to check current balance")
-    print("Press 3 to see transaction history")
-    print("Press 4 to perform a transaction")
+    print(" Press 1 to log into a different user")
+    print(" Press 2 to check current balance")
+    print(" Press 3 to see transaction history")
+    print(" Press 4 to perform a transaction")
     userInput = input("Your choice: ")
 
     if userInput == "1":
@@ -78,6 +84,8 @@ while True:
 
     elif userInput == "2":
         print("current balance")
+        loggedUsersWallet.calculate_balance(blockchain())
+        print(f"{loggedUsersWallet.balance}")
 
     elif userInput == "3":
         print("transaction history")
