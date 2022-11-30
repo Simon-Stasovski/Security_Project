@@ -1,4 +1,3 @@
-text = input("prompt")
 import sys
 import hashlib
 
@@ -15,6 +14,7 @@ from simon import user_wallet as simon_wallet
 from jacob import user_wallet as jacob_wallet
 from chase import user_wallet as chase_wallet
 from initialize_blockchain import blockchain
+from node.Block import Block
 
 userArray = [simon_username, jacob_username, chase_username]
 userPass = [simon_hash, jacob_hash, chase_hash]
@@ -95,3 +95,5 @@ while True:
 
     else:
         print("Not a valid option")
+
+# def get_ledger(most_recent_block : Block):

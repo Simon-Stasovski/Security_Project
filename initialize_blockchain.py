@@ -16,7 +16,7 @@ chase_wallet = Owner(private_key=chase_private_key)
 def blockchain():
     timestamp_0 = datetime.timestamp(datetime.fromisoformat("2011-11-04 00:05:23.111"))
     input_0 = TransactionInput(transaction_hash="abcd1234", output_index=0)
-    output_0 = TransactionOutput(public_key_hash=b"Albert", amount=40)
+    output_0 = TransactionOutput(public_key_hash="Albert", amount=40)
     inputs = [input_0.to_json()]
     outputs = [output_0.to_json()]
     block_0 = Block(

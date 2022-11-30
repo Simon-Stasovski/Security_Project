@@ -111,15 +111,12 @@ class Wallet:
 
             outputs = []
 
-            i = 0
             for outputString in outputsString:
-                outputs[i] = json.loads(outputString)
-                outputs[i] = outputs[i].amount
-                i += 1
+                outputs.append(json.loads(outputString))
 
             for output in outputs:
-                if self.owner.public_key_hash == output.public_key_hash:
-                    self.balance += output.amount
+                if self.owner.public_key_hash == output["public_key_hash"]:
+                    self.balance += output["amount"]
 
             block = block.previous_block
 
