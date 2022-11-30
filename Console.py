@@ -18,22 +18,22 @@ while True:
     userArray = [simon_username, jacob_username, chase_username]
     userPass = [simon_hash, jacob_hash, chase_hash]
 
-    prompt = input("Please enter Username")
+    usernameConsole = input("Please enter Username ")
+    passwordConsole = input("Please enter Password ")
 
-    # Print the message digest
     containsUser = False
     index = -1
     for i in userArray:
         index += 1
-        if array[0].lower() == i:
+        if usernameConsole.lower() == i:
             containsUser = True
 
     if containsUser:
         print("Username Found")
 
-    byte_input = array[1].encode()
+    byte_input = passwordConsole.encode()
     hash_pass = hashlib.sha256(byte_input)
     containsPass = False
     for j in userPass:
-        if hash_pass == j:
+        if passwordConsole == j:
             containsPass = True
