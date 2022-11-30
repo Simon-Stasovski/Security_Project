@@ -35,5 +35,14 @@ while True:
     hash_pass = hashlib.sha256(byte_input)
     containsPass = False
     for j in userPass:
-        if passwordConsole == j:
+        if hash_pass.digest() == j.digest():
             containsPass = True
+
+    if containsPass:
+        print("Password Found")
+    else:
+        print("Password not found")
+
+    # print(f"you are now logged in as {usernameConsole}")
+    # print(f"{hash_pass.digest()} {chase_hash.digest()}")
+    # print(f"sh:  {simon_hash}  jh:  {jacob_hash}  ch:   {chase_hash}")
