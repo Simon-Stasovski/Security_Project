@@ -118,7 +118,7 @@ loggedUsersWallet = userWallets[loggedUser]
 chain = blockchain()
 while True:
     print(f"Welcome {userArray[loggedUser].capitalize()}")
-    print("\tMenu")
+    print("\tNot a Scam Coin Blockchain")
     print("\t\tPress 1 to log into a different user")
     print("\t\tPress 2 to check current balance")
     print("\t\tPress 3 to see transaction history")
@@ -128,6 +128,7 @@ while True:
     # SOMETHING WRONG HERE
     if userInput == "1":
         loggedUser = login()
+        loggedUsersWallet = userWallets[loggedUser]
     elif userInput == "2":
         loggedUsersWallet.calculate_balance(chain)
         print(f"Current Balance: {loggedUsersWallet.balance} NS Coin")
@@ -177,8 +178,6 @@ while True:
             balance += o["amount"]
             inputs.append(TransactionInput(transaction_hash = o["hash"], output_index = o["index"]))
             if balance >= value: break
-        
-        print(type(inputs[0]))
         
         outputs = []
         outputs.append(TransactionOutput(pubK, value))
