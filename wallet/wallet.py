@@ -72,13 +72,7 @@ class Transaction:
 class Wallet:
     def __init__(self, owner: Owner):
         self.owner = owner
-        self.node = Node()
         self.balance = 0
-
-    def process_transaction( self, inputs: list[TransactionInput], outputs: list[TransactionOutput] ):# -> requests.Response:
-        transaction = Transaction(self.owner, inputs, outputs)
-        transaction.sign()
-        return self.node.send({"transaction": transaction.transaction_data})
 
     def calculate_balance(self, block: Block):
         self.balance = 0
