@@ -7,32 +7,23 @@ from common.transaction_input import TransactionInput
 from common.transaction_output import TransactionOutput
 from node.Block import Block
 from wallet.wallet import Owner
-
-simon_wallet = Owner(private_key=simon_private_key)
-jacob_wallet = Owner(private_key=jacob_private_key)
-chase_wallet = Owner(private_key=chase_private_key)
+from simon import user_wallet as simon_wallet
+from jacob import user_wallet as jacob_wallet
+from chase import user_wallet as chase_wallet
 
 
 def blockchain():
     timestamp_0 = datetime.timestamp(datetime.fromisoformat("2011-11-04 00:05:23.111"))
     input_0 = TransactionInput(transaction_hash="abcd1234", output_index=0)
-    output_0 = TransactionOutput(public_key_hash="Albert", amount=40)
+    output_0 = TransactionOutput(public_key_hash="dummy", amount=40)
     inputs = [input_0.to_json()]
     outputs = [output_0.to_json()]
-    block_0 = Block(
-        transaction_data={"inputs": inputs, "outputs": outputs}, timestamp=timestamp_0
-    )
+    block_0 = Block(transaction_data={"inputs": inputs, "outputs": outputs}, timestamp=timestamp_0)
 
     timestamp_1 = datetime.timestamp(datetime.fromisoformat("2011-11-30 00:05:23.111"))
-    input_0 = TransactionInput(
-        transaction_hash=block_0.transaction_data, output_index=0
-    )
-    output_0 = TransactionOutput(
-        public_key_hash=jacob_wallet.public_key_hash, amount=30
-    )
-    output_1 = TransactionOutput(
-        public_key_hash=simon_wallet.public_key_hash, amount=10
-    )
+    input_0 = TransactionInput(transaction_hash=block_0.transaction_hash, output_index=0)
+    output_0 = TransactionOutput(public_key_hash=jacob_wallet.owner.public_key_hash, amount=30)
+    output_1 = TransactionOutput(public_key_hash=simon_wallet.owner.public_key_hash, amount=10)
     inputs = [input_0.to_json()]
     outputs = [output_0.to_json(), output_1.to_json()]
 
@@ -43,12 +34,8 @@ def blockchain():
     )
 
     timestamp_2 = datetime.timestamp(datetime.fromisoformat("2011-11-30 00:05:13.222"))
-    input_0 = TransactionInput(
-        transaction_hash=block_1.transaction_data, output_index=1
-    )
-    output_0 = TransactionOutput(
-        public_key_hash=chase_wallet.public_key_hash, amount=10
-    )
+    input_0 = TransactionInput(transaction_hash=block_1.transaction_hash, output_index=1)
+    output_0 = TransactionOutput(public_key_hash=chase_wallet.owner.public_key_hash, amount=10)
     inputs = [input_0.to_json()]
     outputs = [output_0.to_json()]
     block_2 = Block(
@@ -58,13 +45,9 @@ def blockchain():
     )
 
     timestamp_3 = datetime.timestamp(datetime.fromisoformat("2011-11-30 00:11:13.333"))
-    input_0 = TransactionInput(
-        transaction_hash=block_1.transaction_data, output_index=0
-    )
-    output_0 = TransactionOutput(public_key_hash=chase_wallet.public_key_hash, amount=5)
-    output_1 = TransactionOutput(
-        public_key_hash=jacob_wallet.public_key_hash, amount=25
-    )
+    input_0 = TransactionInput(transaction_hash=block_1.transaction_hash, output_index=0)
+    output_0 = TransactionOutput(public_key_hash=chase_wallet.owner.public_key_hash, amount=5)
+    output_1 = TransactionOutput(public_key_hash=jacob_wallet.owner.public_key_hash, amount=25)
     inputs = [input_0.to_json()]
     outputs = [output_0.to_json(), output_1.to_json()]
     block_3 = Block(

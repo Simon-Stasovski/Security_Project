@@ -1,6 +1,7 @@
 import sys
 import hashlib
 import json
+from datetime import datetime
 
 # print(sys.argv)
 
@@ -37,6 +38,7 @@ def get_ledger(most_recent_block: Block, public_key: str):
     messages = []
 
     while most_recent_block is not None:
+        setTimestamp = False
 
         inputsStrings = most_recent_block.transaction_data["inputs"]
         outputsString = most_recent_block.transaction_data["outputs"]
@@ -50,42 +52,44 @@ def get_ledger(most_recent_block: Block, public_key: str):
         for outputString in outputsString:
             outputs.append(json.loads(outputString))
 
-        messages.append(most_recent_block)
-        if most_recent_block.previous_block is not None:
+        prev_block = most_recent_block.previous_block
+        inputBy = False
+        for i in inputs:
+            while prev_block is not None:
+                if prev_block.transaction_hash == i["transaction_hash"]:
+                    outputsPreviousStrings = prev_block.transaction_data["outputs"]
 
-            outputsPreviousStrings = most_recent_block.previous_block.transaction_data[
-                "outputs"
-            ]
+                    outputsPrevious = []
 
-            outputsPrevious = []
+                    for outputPreviousStrings in outputsPreviousStrings:
+                        outputsPrevious.append(json.loads(outputPreviousStrings))
 
-            for outputPreviousStrings in outputsPreviousStrings:
-                outputsPrevious.append(json.loads(outputPreviousStrings))
-
-            for inputs in outputsPrevious:
-                if (
-                    public_key
-                    == outputsPrevious[input["output_index"]]["public_key_hash"]
-                ):
-                    print(
-                        "You payed "
-                        + str(outputs[input["output_index"]]["amount"])
-                        + " NS Coin(s)."
-                    )
+                    if public_key == outputsPrevious[i["output_index"]]["public_key_hash"]:
+                        messages.append("You payed " + str(outputsPrevious[i["output_index"]]["amount"]) + " NS Coin(s).")
+                        setTimestamp = True
+                        inputBy = True
+                    
+                    break
+                else: prev_block = prev_block.previous_block
+            if not inputBy: break
 
         for output in outputs:
             if public_key == output["public_key_hash"]:
-                print("You received " + str(output["amount"]) + " NS Coin(s).")
+                setTimestamp = True
+                messages.append("You received " + str(output["amount"]) + " NS Coin(s).")
 
+        if setTimestamp: messages.append("Timestamp: " + str(datetime.fromtimestamp(most_recent_block.timestamp)))
         most_recent_block = most_recent_block.previous_block
+    
+    for m in messages[::-1]: print("\t" + m)
 
 
 def login():
     login = False
     while login is False:
 
-        usernameConsole = input("Please enter Username ")
-        passwordConsole = input("Please enter Password ")
+        usernameConsole = input("Please enter username: ")
+        passwordConsole = input("Please enter password: ")
 
         containsUser = False
         index = -1
@@ -93,9 +97,10 @@ def login():
             index += 1
             if usernameConsole.lower() == i:
                 containsUser = True
+                break
 
-        if containsUser:
-            print("Username Found")
+        #if containsUser:
+            #print("Username Found")
 
         byte_input = passwordConsole.encode()
         hash_pass = hashlib.sha256(byte_input)
@@ -104,44 +109,41 @@ def login():
             if hash_pass.digest() == j.digest():
                 containsPass = True
 
-        if containsPass:
-            print("Password Found")
-        else:
+        if not containsPass:
             print("Password not found")
 
         if containsUser and containsPass:
             login = True
 
         if login:
-            print(f"you are now logged in as {usernameConsole}")
+            print(f"You are now logged in as {usernameConsole}")
             return index
 
 
 loggedUser = login()
 loggedUsersWallet = userWallets[loggedUser]
 while True:
-    print(f" Welcome {userArray[loggedUser]}")
-    print("         Menu:        ")
-    print(" Press 1 to log into a different user")
-    print(" Press 2 to check current balance")
-    print(" Press 3 to see transaction history")
-    print(" Press 4 to perform a transaction")
+    print(f"Welcome {userArray[loggedUser].capitalize()}")
+    print("\tMenu")
+    print("\t\tPress 1 to log into a different user")
+    print("\t\tPress 2 to check current balance")
+    print("\t\tPress 3 to see transaction history")
+    print("\t\tPress 4 to perform a transaction")
     userInput = input("Your choice: ")
 
     if userInput == "1":
         loggedUser = login()
 
     elif userInput == "2":
-        print("current balance")
         loggedUsersWallet.calculate_balance(blockchain())
-        print(f"{loggedUsersWallet.balance}")
-
+        print(f"Current Balance: {loggedUsersWallet.balance} NaS Coin")
+        print()
     elif userInput == "3":
-        print("transaction history")
+        print("Transaction History:")
         get_ledger(blockchain(), loggedUsersWallet.owner.public_key_hash)
-
+        print()
     elif userInput == "4":
-        print("perform a transaction")
+        print("Perform a Transaction:")
 
     else:
         print("Not a valid option")

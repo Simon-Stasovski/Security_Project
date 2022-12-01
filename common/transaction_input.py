@@ -6,12 +6,7 @@ class TransactionInput:
     # transaction_hash - the previous transaction's hash
     # output_index - index in the UTXO
     # unlocking_script - script that must be run to unlock the transaction funds
-    def __init__(
-        self,
-        transaction_hash: str,
-        output_index: int,
-        unlocking_script: str = "",
-    ):
+    def __init__( self, transaction_hash: str, output_index: int, unlocking_script: str = "" ):
         self.transaction_hash = transaction_hash
         self.output_index = output_index
         self.unlocking_script = unlocking_script
