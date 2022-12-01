@@ -20,9 +20,7 @@ class TransactionOutput:
         # hashed pubK is added to Stack
         # OP_EQUAL_VERIFY checks if the last 2 items match, fails otherwise
         # OP_CHECK_SIG hashes the tx's outputs, inputs, and script, then validates to the provided signature
-        self.locking_script = (
-            f"OP_DUP OP_HASH160 {public_key_hash} OP_EQUAL_VERIFY OP_CHECKSIG"
-        )
+        self.locking_script = (f"OP_DUP OP_HASH160 {public_key_hash} OP_EQUAL_VERIFY OP_CHECKSIG")
 
     # converts the transaction output into a json string
     def to_json(self) -> str:

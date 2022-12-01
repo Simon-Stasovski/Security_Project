@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from node.node import NodeTransaction, TransactionException
+from node.node import TransactionValidation, TransactionException
 from initialize_blockchain import blockchain
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ blockchain_base = blockchain()
 def validate_transaction():
     content = request.json
     try:
-        node = NodeTransaction(blockchain_base)
+        node = TransactionValidation(blockchain_base)
         node.receive(transaction=content["transaction"])
         node.validate()
         node.validate_funds()
