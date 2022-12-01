@@ -2,7 +2,7 @@ import hashlib
 import json
 from datetime import datetime
 
-from wallet.wallet import Owner, Transaction
+from wallet.wallet import Transaction
 from simon import username as simon_username
 from jacob import username as jacob_username
 from chase import username as chase_username

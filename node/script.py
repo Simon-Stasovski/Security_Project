@@ -3,7 +3,6 @@ import binascii
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
-import copy
 
 from common.utils import calculate_hash
 from wallet.wallet import Transaction

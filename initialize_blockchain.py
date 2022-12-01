@@ -1,12 +1,8 @@
 from datetime import datetime
 
-from simon import private_key as simon_private_key
-from jacob import private_key as jacob_private_key
-from chase import private_key as chase_private_key
 from common.transaction_input import TransactionInput
 from common.transaction_output import TransactionOutput
 from node.Block import Block
-from wallet.wallet import Owner
 from simon import user_wallet as simon_wallet
 from jacob import user_wallet as jacob_wallet
 from chase import user_wallet as chase_wallet

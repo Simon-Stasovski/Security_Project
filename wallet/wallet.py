@@ -4,7 +4,6 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
 import json
-import requests
 
 from common.utils import calculate_hash
 from common.transaction_input import TransactionInput
@@ -12,8 +11,6 @@ from common.transaction_output import TransactionOutput
 from node.Block import Block
 
 # a user's Owner
-
-
 class Owner:
     def __init__(self, private_key: str = ""):
         if private_key:
@@ -70,19 +67,6 @@ class Transaction:
             "inputs": [i.to_json() for i in self.inputs],
             "outputs": [i.to_json() for i in self.outputs],
         }
-        
-
-class Node:
-    def __init__(self):
-        ip = "127.0.0.1"
-        port = 5000
-        self.base_url = f"http://{ip}:{port}/"
-
-    def send(self, transaction_data: dict) -> requests.Response:
-        url = f"{self.base_url}transactions"
-        req_return = requests.post(url, json=transaction_data)
-        req_return.raise_for_status()
-        return req_return
 
 
 class Wallet:
@@ -91,7 +75,7 @@ class Wallet:
         self.node = Node()
         self.balance = 0
 
-    def process_transaction( self, inputs: list[TransactionInput], outputs: list[TransactionOutput] ) -> requests.Response:
+    def process_transaction( self, inputs: list[TransactionInput], outputs: list[TransactionOutput] ):# -> requests.Response:
         transaction = Transaction(self.owner, inputs, outputs)
         transaction.sign()
         return self.node.send({"transaction": transaction.transaction_data})
@@ -139,16 +123,3 @@ class Wallet:
                     self.balance += json.loads(output)["amount"]
 
             block = block.previous_block
-
-
-class Node:
-    def __init__(self):
-        ip = "127.0.0.1"
-        port = 5000
-        self.base_url = f"http://{ip}:{port}/"
-
-    def send(self, transaction_data: dict) -> requests.Response:
-        url = f"{self.base_url}transactions"
-        req_return = requests.post(url, json=transaction_data)
-        req_return.raise_for_status()
-        return req_return
