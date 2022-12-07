@@ -4,8 +4,8 @@ from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
 
-from common.utils import calculate_hash
-from wallet.wallet import Transaction
+from utils import calculate_hash
+from transaction.transaction import Transaction
 
 # normal Stack class
 class Stack:

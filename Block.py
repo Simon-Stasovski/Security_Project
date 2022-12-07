@@ -1,4 +1,4 @@
-from common.utils import calculate_hash
+from utils import calculate_hash
 import json
 
 # each block in the chain

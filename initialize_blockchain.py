@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from common.transaction_input import TransactionInput
-from common.transaction_output import TransactionOutput
-from node.Block import Block
+from transaction.transaction_input import TransactionInput
+from transaction.transaction_output import TransactionOutput
+from Block import Block
 from simon import user_wallet as simon_wallet
 from jacob import user_wallet as jacob_wallet
 from chase import user_wallet as chase_wallet
 
-
+# Creates fake transactions as a usable basis for the blockchain. First creates the genesis block.
+# BYPASSES VALIDATION
 def blockchain():
     timestamp_0 = datetime.timestamp(datetime.fromisoformat("2011-11-04 00:05:23.111"))
     input_0 = TransactionInput(transaction_hash="abcd1234", output_index=0)

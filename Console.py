@@ -2,7 +2,6 @@ import hashlib
 import json
 from datetime import datetime
 
-from wallet.wallet import Transaction
 from simon import username as simon_username
 from jacob import username as jacob_username
 from chase import username as chase_username
@@ -13,10 +12,10 @@ from simon import user_wallet as simon_wallet
 from jacob import user_wallet as jacob_wallet
 from chase import user_wallet as chase_wallet
 from initialize_blockchain import blockchain
-from node.Block import Block
-from node.node import TransactionValidation
-from common.transaction_input import TransactionInput
-from common.transaction_output import TransactionOutput
+from Block import Block
+from transaction.transaction import TransactionValidation, Transaction
+from transaction.transaction_input import TransactionInput
+from transaction.transaction_output import TransactionOutput
 
 userArray = [simon_username, jacob_username, chase_username]
 userPass = [simon_hash, jacob_hash, chase_hash]
@@ -140,7 +139,7 @@ while True:
     elif userInput == "4":
         print("Perform a Transaction:\n")
         pubK = input("Public Key of Recipient: ")
-        # TODO: REMOVE
+        # HARD-CODED VALUE FOR DEMO PURPOSES - acts almost like a contact
         if pubK == "simon": pubK = "8596618c5149d90896196ea16f3226ededec745f9c6593bc6a12eeb699c5a6c2"
         user_to_pay = None
         for user in userWallets:
@@ -164,6 +163,7 @@ while True:
             print("Error: Coins cannot be negative!")
             continue
 
+        # Note that this validation would be located in every node in the decentralized system in a real cryptocurrency system, but for our purposes it's all located here.
         validation = TransactionValidation(chain)
         utxo = validation.find_unspent_outputs(loggedUsersWallet.owner.public_key_hash)
         balance = 0
