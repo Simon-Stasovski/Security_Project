@@ -17,6 +17,9 @@ from transaction.transaction import TransactionValidation, Transaction
 from transaction.transaction_input import TransactionInput
 from transaction.transaction_output import TransactionOutput
 
+# REQUIRED IMPORTS:
+    # pycryptodome
+
 userArray = [simon_username, jacob_username, chase_username]
 userPass = [simon_hash, jacob_hash, chase_hash]
 userWallets = [simon_wallet, jacob_wallet, chase_wallet]
@@ -124,7 +127,6 @@ while True:
     print("\t\tPress 4 to perform a transaction")
     userInput = input("Your choice: ")
 
-    # SOMETHING WRONG HERE
     if userInput == "1":
         loggedUser = login()
         loggedUsersWallet = userWallets[loggedUser]

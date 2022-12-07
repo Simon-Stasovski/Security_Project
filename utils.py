@@ -1,4 +1,3 @@
-from Crypto.Hash import RIPEMD160, SHA256
 import hashlib
 
 # calculates the hash of data in SHA256 or RIPEMD160 (defaults to SHA256)
