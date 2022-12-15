@@ -37,13 +37,6 @@ class Transaction:
         for ti in self.inputs:
             ti.unlocking_script = f"{sig_hex} {self.owner.public_key_hex}"
 
-    # formats transaction data for sending to node
-    def send_to_nodes(self):
-        return {
-            "inputs": [i.to_json() for i in self.inputs],
-            "outputs": [i.to_json() for i in self.outputs],
-        }
-
 class TransactionValidation:
     def __init__(self, blockchain: Block):
         self.blockchain = blockchain
