@@ -121,10 +121,11 @@ chain = blockchain()
 while True:
     print(f"Welcome {userArray[loggedUser].capitalize()}")
     print("\tNot a Scam Coin Blockchain")
-    print("\t\tPress 1 to log into a different user")
-    print("\t\tPress 2 to check current balance")
-    print("\t\tPress 3 to see transaction history")
-    print("\t\tPress 4 to perform a transaction")
+    print("\t\tPress 1 to Log into a different user")
+    print("\t\tPress 2 to Check current balance")
+    print("\t\tPress 3 to See transaction history")
+    print("\t\tPress 4 to Perform a transaction")
+    print("\t\tPress 5 to Display crypto name")
     userInput = input("Your choice: ")
 
     if userInput == "1":
@@ -141,8 +142,6 @@ while True:
     elif userInput == "4":
         print("Perform a Transaction:\n")
         pubK = input("Public Key of Recipient: ")
-        # HARD-CODED VALUE FOR DEMO PURPOSES - acts almost like a contact
-        if pubK == "simon": pubK = "8596618c5149d90896196ea16f3226ededec745f9c6593bc6a12eeb699c5a6c2"
         user_to_pay = None
         for user in userWallets:
             if pubK == user.owner.public_key_hash: user_to_pay = user
@@ -210,5 +209,8 @@ while True:
 
         print("Transaction executed successfully!")
 
+    elif userInput == "5":
+        print("Not-a-Scam Coin Blockchain")
+    
     else:
         print("Not a valid option")
