@@ -5,7 +5,6 @@ from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
 
 from utils import calculate_hash
-from transaction.transaction import Transaction
 
 # normal Stack class
 class Stack:
@@ -22,7 +21,7 @@ class Stack:
     # Modeled after the Script language used by Bitcoin
 class StackScript(Stack):
     # constructor; stores the current transaction data
-    def __init__(self, transaction_data : Transaction):
+    def __init__(self, transaction_data):
         super().__init__()
         self.transaction_data = transaction_data
     

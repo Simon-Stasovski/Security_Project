@@ -3,8 +3,8 @@ import json
 
 from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
-from transaction_input import TransactionInput
-from transaction_output import TransactionOutput
+from .transaction_input import TransactionInput
+from .transaction_output import TransactionOutput
 
 from Block import Block
 from script import StackScript
